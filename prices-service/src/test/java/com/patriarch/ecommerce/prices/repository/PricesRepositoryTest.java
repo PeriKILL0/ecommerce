@@ -1,17 +1,12 @@
 package com.patriarch.ecommerce.prices.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -19,10 +14,10 @@ import com.patriarch.ecommerce.prices.entity.Price;
 
 @DataJpaTest
 class PricesRepositoryTest {
-	
+
 	@Autowired
 	PricesRepository repository;
-	
+
 	@Test
 	void testFindPriceDateFilterFound() throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -36,9 +31,9 @@ class PricesRepositoryTest {
 		expected.setValue(35.99);
 		expected.setCurrency("EUR");
 		repository.save(expected);
-		
+
 		List<Price> prices = repository.findPrice(1L, 1L, sdf.parse("2022-04-04 00:00"));
-		
+
 		assertThat(prices).isNotEmpty();
 		assertThat(prices.get(0)).usingRecursiveComparison().isEqualTo(expected);
 	}
@@ -56,9 +51,9 @@ class PricesRepositoryTest {
 		expected.setValue(35.99);
 		expected.setCurrency("EUR");
 		repository.save(expected);
-		
+
 		List<Price> prices = repository.findPrice(1L, 1L, sdf.parse("2022-05-04 00:00"));
-		
+
 		assertThat(prices).isEmpty();
 	}
 

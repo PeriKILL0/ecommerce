@@ -1,16 +1,12 @@
 package com.patriarch.ecommerce.prices.service;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,6 +17,24 @@ class PricesServiceTest {
 
 	@Autowired
 	PricesService pricesService;
+
+	@Test
+	void testFindPriceNotFound() throws ParseException {
+
+		Price price = pricesService.findPrice(1L, 1L, new Date());
+
+		assertThat(price).isNull();
+
+	}
+
+	@Test
+	void testFindPriceNullArgs() throws ParseException {
+
+		Price price = pricesService.findPrice(null, null, null);
+
+		assertThat(price).isNull();
+
+	}
 
 	@Test
 	void testFindPriceCase1() throws ParseException {

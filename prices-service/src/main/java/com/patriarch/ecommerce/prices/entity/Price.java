@@ -1,6 +1,5 @@
 package com.patriarch.ecommerce.prices.entity;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,7 +10,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Prices entity
+ * Prices entity.
  * 
  * @author PeriKILL0
  */
