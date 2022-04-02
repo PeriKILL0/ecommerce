@@ -1,5 +1,6 @@
 package com.patriarch.ecommerce.prices.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -60,13 +61,27 @@ public class Price {
 	 * Price.
 	 */
 	@Column(name = "PRICE", nullable = false)
-	private Double price;
+	private Double value;
 
 	/**
 	 * Currency.
 	 */
 	@Column(name = "CURR", nullable = false)
 	private String currency;
+
+	/**
+	 * Constructor.
+	 */
+	public Price() {
+		this.priceList = null;
+		this.brandId = null;
+		this.productId = null;
+		this.startDate = null;
+		this.endDate = null;
+		this.priority = null;
+		this.value = null;
+		this.currency = null;
+	}
 
 	/**
 	 * Gets the price list.
@@ -177,21 +192,21 @@ public class Price {
 	}
 
 	/**
-	 * Gets the price.
+	 * Gets the value.
 	 * 
-	 * @return Price.
+	 * @return Value.
 	 */
-	public Double getPrice() {
-		return price;
+	public Double getValue() {
+		return value;
 	}
 
 	/**
-	 * Sets the price.
+	 * Sets the value.
 	 * 
-	 * @param price New price.
+	 * @param value New value.
 	 */
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setValue(Double value) {
+		this.value = value;
 	}
 
 	/**
