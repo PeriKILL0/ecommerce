@@ -2,8 +2,8 @@ package com.patriarch.ecommerce.prices.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -18,43 +18,78 @@ class PricesRepositoryTest {
 	@Autowired
 	PricesRepository repository;
 
-	@Test
-	void testFindPriceDateFilterFound() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private Price createPrice() {
 		Price expected = new Price();
 		expected.setPriceList(1L);
-		expected.setBrandId(1L);
-		expected.setProductId(1L);
-		expected.setStartDate(sdf.parse("2022-04-01 00:00"));
-		expected.setEndDate(sdf.parse("2022-05-01 00:00"));
+		expected.setBrandId(10L);
+		expected.setProductId(100L);
+		expected.setStartDate(Date.from(Instant.parse("2022-04-01T00:00:00Z")));
+		expected.setEndDate(Date.from(Instant.parse("2022-05-01T00:00:00Z")));
 		expected.setPriority(0);
 		expected.setValue(35.99);
 		expected.setCurrency("EUR");
-		repository.save(expected);
-
-		List<Price> prices = repository.findPrice(1L, 1L, sdf.parse("2022-04-04 00:00"));
-
-		assertThat(prices).isNotEmpty();
-		assertThat(prices.get(0)).usingRecursiveComparison().isEqualTo(expected);
+		return expected;
 	}
 
 	@Test
-	void testFindPriceDateFilterNotFound() throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Price expected = new Price();
-		expected.setPriceList(1L);
-		expected.setBrandId(1L);
-		expected.setProductId(1L);
-		expected.setStartDate(sdf.parse("2022-04-01 00:00"));
-		expected.setEndDate(sdf.parse("2022-05-01 00:00"));
-		expected.setPriority(0);
-		expected.setValue(35.99);
-		expected.setCurrency("EUR");
+	void testFindPriceFound() {
+
+		Price expected = createPrice();
 		repository.save(expected);
 
-		List<Price> prices = repository.findPrice(1L, 1L, sdf.parse("2022-05-04 00:00"));
+		List<Price> prices = repository.findPrice(100L, 10L, Date.from(Instant.parse("2022-04-04T00:00:00Z")));
+
+		assertThat(prices).isNotEmpty();
+		assertThat(prices.get(0)).usingRecursiveComparison().isEqualTo(expected);
+
+	}
+
+	@Test
+	void testFindPriceProductNotFound() {
+
+		Price expected = createPrice();
+		repository.save(expected);
+
+		List<Price> prices = repository.findPrice(99L, 10L, Date.from(Instant.parse("2022-05-04T00:00:00Z")));
 
 		assertThat(prices).isEmpty();
+
+	}
+
+	@Test
+	void testFindPriceBrandNotFound() {
+
+		Price expected = createPrice();
+		repository.save(expected);
+
+		List<Price> prices = repository.findPrice(100L, 9L, Date.from(Instant.parse("2022-05-04T00:00:00Z")));
+
+		assertThat(prices).isEmpty();
+
+	}
+
+	@Test
+	void testFindPriceDateNotFound() {
+
+		Price expected = createPrice();
+		repository.save(expected);
+
+		List<Price> prices = repository.findPrice(100L, 10L, Date.from(Instant.parse("2022-05-04T00:00:00Z")));
+
+		assertThat(prices).isEmpty();
+
+	}
+
+	@Test
+	void testFindPriceNullArgs() {
+
+		Price expected = createPrice();
+		repository.save(expected);
+
+		List<Price> prices = repository.findPrice(null, null, null);
+
+		assertThat(prices).isEmpty();
+
 	}
 
 }

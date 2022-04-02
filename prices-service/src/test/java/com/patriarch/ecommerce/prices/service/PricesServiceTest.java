@@ -19,6 +19,23 @@ class PricesServiceTest {
 	PricesService pricesService;
 
 	@Test
+	void testFindPriceFound() throws ParseException {
+
+		Price price = pricesService.findPrice(35455L, 1L, Date.from(Instant.parse("2020-06-14T01:00:00Z")));
+
+		assertThat(price).isNotNull();
+		assertThat(price.getPriceList()).isEqualTo(1L);
+		assertThat(price.getProductId()).isEqualTo(35455L);
+		assertThat(price.getBrandId()).isEqualTo(1L);
+		assertThat(price.getStartDate().toInstant()).isEqualTo(Instant.parse("2020-06-14T00:00:00.000Z"));
+		assertThat(price.getEndDate().toInstant()).isEqualTo(Instant.parse("2020-12-31T23:59:59.000Z"));
+		assertThat(price.getPriority()).isZero();
+		assertThat(price.getValue()).isEqualTo(35.50);
+		assertThat(price.getCurrency()).isEqualTo("EUR");
+
+	}
+
+	@Test
 	void testFindPriceNotFound() throws ParseException {
 
 		Price price = pricesService.findPrice(1L, 1L, new Date());
@@ -33,56 +50,6 @@ class PricesServiceTest {
 		Price price = pricesService.findPrice(null, null, null);
 
 		assertThat(price).isNull();
-
-	}
-
-	@Test
-	void testFindPriceCase1() throws ParseException {
-
-		Price price = pricesService.findPrice(35455L, 1L, Date.from(Instant.parse("2020-06-14T10:00:00Z")));
-
-		assertThat(price).isNotNull();
-		assertThat(price.getPriceList()).isEqualTo(1L);
-
-	}
-
-	@Test
-	void testFindPriceCase2() throws ParseException {
-
-		Price price = pricesService.findPrice(35455L, 1L, Date.from(Instant.parse("2020-06-14T16:00:00Z")));
-
-		assertThat(price).isNotNull();
-		assertThat(price.getPriceList()).isEqualTo(2L);
-
-	}
-
-	@Test
-	void testFindPriceCase3() throws ParseException {
-
-		Price price = pricesService.findPrice(35455L, 1L, Date.from(Instant.parse("2020-06-14T21:00:00Z")));
-
-		assertThat(price).isNotNull();
-		assertThat(price.getPriceList()).isEqualTo(1L);
-
-	}
-
-	@Test
-	void testFindPriceCase4() throws ParseException {
-
-		Price price = pricesService.findPrice(35455L, 1L, Date.from(Instant.parse("2020-06-15T10:00:00Z")));
-
-		assertThat(price).isNotNull();
-		assertThat(price.getPriceList()).isEqualTo(3L);
-
-	}
-
-	@Test
-	void testFindPriceCase5() throws ParseException {
-
-		Price price = pricesService.findPrice(35455L, 1L, Date.from(Instant.parse("2020-06-16T21:00:00Z")));
-
-		assertThat(price).isNotNull();
-		assertThat(price.getPriceList()).isEqualTo(4L);
 
 	}
 
